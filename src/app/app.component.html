@@ -1,15 +1,40 @@
-<app-header></app-header>
-<div class="main-section">
-  <aside class="main-aside">
-    <ul class="nav flex-column">
-      <li><a class="nav-link active" [routerLink]="''">Dashboard</a></li>
-      <li><a class="nav-link" [routerLink]="''">Dashboard</a></li>
-      <li><a class="nav-link" [routerLink]="''">Dashboard</a></li>
-      <li><a class="nav-link" [routerLink]="''">Dashboard</a></li>
-      <li><a class="nav-link" [routerLink]="''">Dashboard</a></li>
-    </ul>
-  </aside>
-  <div class="main-container">
-    <router-outlet></router-outlet>
+<md-sidenav-container class="demo-root" fullscreen>
+  <md-sidenav #start>
+    <md-nav-list>
+      <a *ngFor="let navItem of navItems"
+         md-list-item
+         (click)="start.close()"
+         routerLinkActive
+         #routerLinkActiveInstance="routerLinkActive"
+         [attr.tabindex]="routerLinkActiveInstance.isActive ? 0 : -1"
+         [routerLink]="[navItem.route]">
+        {{navItem.name}}
+      </a>
+
+      <hr>
+    </md-nav-list>
+  </md-sidenav>
+  <div>
+    <md-toolbar color="primary">
+      <button md-icon-button (click)="start.open()">
+        <md-icon class="md-24">menu</md-icon>
+      </button>
+      <div class="demo-toolbar">
+        <h1>ng-admin</h1>
+        <div>
+          <button md-icon-button (click)="toggleFullscreen()" title="Toggle fullscreen">
+            <md-icon class="md-24">fullscreen</md-icon>
+          </button>
+          <button md-button (click)="toggleTheme()">{{dark ? 'Light' : 'Dark'}} theme</button>
+          <button md-button (click)="root.dir = (root.dir == 'rtl' ? 'ltr' : 'rtl')" title="Toggle between RTL and LTR">
+            {{root.dir.toUpperCase()}}
+          </button>
+        </div>
+      </div>
+    </md-toolbar>
+
+    <div #root="dir" dir="ltr" class="demo-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-</div>
+</md-sidenav-container>
